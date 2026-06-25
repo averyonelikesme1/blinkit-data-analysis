@@ -73,14 +73,15 @@ st.write(df.nunique())
 #finding the distribution of numerical columns in the data with analysis
 df_num = df.select_dtypes(include= np.number).columns
 st.write("Distribution of numerical columns in the data:")
-a = 1
-for i in df_num:
-    plt.subplot(2,3,a)
-    sns.histplot(df[i],kde=True)
-    a += 1
-plt.tight_layout()
-st.pyplot(plt)
-st.write("this histogram shows the distribution of numerical columns in the data, we can see that the 'Sales' column is right skewed, which indicates that there are some extreme values in the data. The 'Weight' column is normally distributed, which indicates that the data is balanced. The 'Item_Visibility' column is left skewed, which indicates that there are some extreme values in the data. The 'Item_MRP' column is normally distributed, which indicates that the data is balanced. The 'Outlet_Establishment_Year' column is normally distributed, which indicates that the data is balanced.")
+if st.checkbox("Show Histogram"):
+    a = 1
+    for i in df_num:
+        plt.subplot(2,3,a)
+        sns.histplot(df[i],kde=True)
+        a += 1
+    plt.tight_layout()
+    st.pyplot(plt)
+    st.write("this histogram shows the distribution of numerical columns in the data, we can see that the 'Sales' column is right skewed, which indicates that there are some extreme values in the data. The 'Weight' column is normally distributed, which indicates that the data is balanced. The 'Item_Visibility' column is left skewed, which indicates that there are some extreme values in the data. The 'Item_MRP' column is normally distributed, which indicates that the data is balanced. The 'Outlet_Establishment_Year' column is normally distributed, which indicates that the data is balanced.")
 
 
 
@@ -91,11 +92,12 @@ df['Item Fat Content'].replace({'low fat' : 'Low Fat','LF' : 'Low Fat','Regular'
 st.write("Distribution of categorical columns in the data:")
 avg_content = pd.DataFrame(df.groupby('Item Fat Content')['Sales'].mean()).reset_index()
 st.write("Average Sales by Item Fat Content:")
-plt.figure(figsize=(2,2))
-plt.title('Average Sales of Item Fat Content')
-plt.pie(avg_content['Sales'],autopct= '%1.2f%%', labels= [i for i in avg_content['Item Fat Content']])
-st.pyplot(plt)
-st.write("this pie chart shows the average sales of item fat content, we can see that the low fat items have the highest average sales, followed by regular fat items. This indicates that customers prefer low fat items over regular fat items.")
+if st.checkbox("Show Pie Chart"):
+    plt.figure(figsize=(2,2))
+    plt.title('Average Sales of Item Fat Content')
+    plt.pie(avg_content['Sales'],autopct= '%1.2f%%', labels= [i for i in avg_content['Item Fat Content']])
+    st.pyplot(plt)
+    st.write("this pie chart shows the average sales of item fat content, we can see that the low fat items have the highest average sales, followed by regular fat items. This indicates that customers prefer low fat items over regular fat items.")
 
 #showing the number of items by type in the data with analysis
 fat_nitems = df['Item Type'].value_counts()
@@ -108,22 +110,25 @@ st.write(fat_nitems)
 #showing the number of items by type in the data with analysis in a bar chart
 plt.figure(figsize=(10,5))
 st.write("Bar chart of Number of Items by Type:")
-sns.barplot(x = 'Item Type', y = 'Count', data = fat_nitems, width=0.6)
-st.pyplot(plt)
-st.write("this bar chart shows the number of items by type in the data, we can see that the most common item type is 'Fruits and Vegetables', followed by 'Snack Foods' and 'Household'. This indicates that customers prefer to buy fruits and vegetables over other items.")
+if st.checkbox("Show Bar Chart"):
+    sns.barplot(x = 'Item Type', y = 'Count', data = fat_nitems, width=0.6,)
+    plt.xticks(rotation=90)
+    st.pyplot(plt)
+    st.write("this bar chart shows the number of items by type in the data, we can see that the most common item type is 'Fruits and Vegetables', followed by 'Snack Foods' and 'Household'. This indicates that customers prefer to buy fruits and vegetables over other items.")
 
 
 #finding the distribution of numerical columns in the data with analysis using boxplot
 st.write("Distribution of numerical columns in the data using boxplot:")
-plt.figure(figsize=(10,5))
-a = 1
-for i in df_num:
-    plt.subplot(3,2,a)
-    sns.boxplot(df[i])
-    a += 1
-plt.tight_layout()
-st.pyplot(plt)
-st.write("this boxplot shows the distribution of numerical columns in the data, we can see that there are some outliers in the data, especially in the 'Sales' column. This indicates that there are some extreme values in the data that could affect the analysis. We can also see that the median of the 'Sales' column is lower than the mean, which indicates that the distribution is skewed to the right.")
+if st.checkbox("Show Boxplot"):
+    plt.figure(figsize=(10,5))
+    a = 1
+    for i in df_num:
+        plt.subplot(3,2,a)
+        sns.boxplot(df[i])
+        a += 1
+    plt.tight_layout()
+    st.pyplot(plt)
+    st.write("this boxplot shows the distribution of numerical columns in the data, we can see that there are some outliers in the data, especially in the 'Sales' column. This indicates that there are some extreme values in the data that could affect the analysis. We can also see that the median of the 'Sales' column is lower than the mean, which indicates that the distribution is skewed to the right.")
 
 
 #side panel to access the data analysis project and dropdown to select the table from the database and column to select the column from the table and display the data in a dropdown and display the data in a table format
